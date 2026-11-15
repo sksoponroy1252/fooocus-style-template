@@ -1,69 +1,125 @@
 # Bangla AI Image Studio
 
-একটি সহজ, লোকাল AI image-generation starter app—Fooocus-এর মতো prompt লিখে ছবি তৈরি করার জন্য। এটি Fooocus-এর কপি নয় এবং Fooocus-এর কোড/মডেল অন্তর্ভুক্ত করে না। ছবি তৈরি করতে Hugging Face থেকে একটি Stable Diffusion model ডাউনলোড হবে; model-এর লাইসেন্স মেনে চলুন।
+AI image generation starter app inspired by Fooocus — designed for local prompt-to-image workflows with a simple Gradio interface.
 
-## ফিচার
+This project is a lightweight starter template and is not affiliated with the official Fooocus project or its model files.
 
-- Prompt এবং negative prompt দিয়ে ছবি তৈরি
-- Width/height, inference steps, guidance scale এবং seed নিয়ন্ত্রণ
-- তৈরি ছবিগুলো `outputs/` ফোল্ডারে সংরক্ষণ
-- CUDA GPU থাকলে সেটি ব্যবহার; না থাকলে CPU fallback (CPU-তে খুব ধীর হতে পারে)
-- প্রথমবার model download করে local Hugging Face cache-এ রাখে
+## Features
 
-## Windows-এ চালানো
+- Prompt and negative prompt input
+- Width / height controls
+- Inference steps and guidance scale controls
+- Seed-based reproducible generation
+- Saves generated output to the `outputs/` folder
+- Works with CUDA, MPS, or CPU fallback
+- Easy local startup in one command
 
-1. Python 3.10 বা 3.11 ইনস্টল করুন।
-2. NVIDIA GPU থাকলে PyTorch-এর উপযুক্ত CUDA install command নিন [PyTorch-এর অফিসিয়াল পেজ](https://pytorch.org/get-started/locally/) থেকে। শুধু CPU-তে চালালে নিচের কমান্ড ব্যবহার করুন:
+## Download
 
-   ```powershell
-   py -m venv .venv
-   .venv\Scripts\activate
-   python -m pip install --upgrade pip
-   pip install torch --index-url https://download.pytorch.org/whl/cpu
-   pip install -r requirements.txt
-   python app.py
-   ```
+You can download the project source from GitHub:
 
-3. ব্রাউজারে `http://127.0.0.1:7860` খুলুন। পরেরবার চালাতে `run_windows.bat` ব্যবহার করতে পারেন।
+- https://github.com/sksoponroy1252/fooocus-style-template
 
-## Linux / macOS
+To get the latest files locally:
+
+```bash
+git clone https://github.com/sksoponroy1252/fooocus-style-template.git
+cd fooocus-style-template
+```
+
+## Quick start
+
+### Windows
+
+```powershell
+py -m venv .venv
+.venv\Scripts\activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python app.py
+```
+
+Or use the included launcher:
+
+```powershell
+run_windows.bat
+```
+
+Then open:
+
+```text
+http://127.0.0.1:7860
+```
+
+### Linux / macOS
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-# NVIDIA GPU হলে PyTorch-এর উপযুক্ত command: https://pytorch.org/get-started/locally/
 pip install -r requirements.txt
 python app.py
 ```
 
-macOS-এ MPS সমর্থিত হলে অ্যাপ সেটি ব্যবহার করার চেষ্টা করে।
+## Model configuration
 
-## Model বেছে নেওয়া
+The project uses Hugging Face Diffusers by default:
 
-ডিফল্ট model `stable-diffusion-v1-5/stable-diffusion-v1-5`। চাইলে `MODEL_ID` environment variable দিয়ে নিজের পছন্দের Diffusers-compatible model দিন। Model download-এর জন্য যথেষ্ট disk space ও internet দরকার। Gated model হলে Hugging Face-এ access অনুমোদন নিয়ে `huggingface-cli login` চালান.
+```text
+stable-diffusion-v1-5/stable-diffusion-v1-5
+```
 
-PowerShell:
+To use a different model:
+
+### PowerShell
 
 ```powershell
-$env:MODEL_ID="your-org/your-diffusers-model"
+$env:MODEL_ID="your-org/your-model-name"
 python app.py
 ```
 
-Bash:
+### Bash
 
 ```bash
-MODEL_ID="your-org/your-diffusers-model" python app.py
+MODEL_ID="your-org/your-model-name" python app.py
 ```
 
-## Hardware
+If the model is gated, sign in with Hugging Face first:
 
-- NVIDIA GPU সুপারিশ করা হয়; VRAM-এর প্রয়োজন model ও image size-এর উপর নির্ভরশীল।
-- CPU mode কাজ করতে পারে, কিন্তু generation দীর্ঘ সময় নিতে পারে।
-- বড় resolution বা বেশি steps memory/time বাড়ায়।
+```bash
+huggingface-cli login
+```
 
-## সতর্কতা
+## Hardware notes
 
-- তৈরি ছবির ব্যবহার model-এর লাইসেন্স এবং প্রযোজ্য আইন/নীতির অধীন।
-- এটি একটি starter app, Fooocus-এর সমমানের feature set নয়।
-- এটি `127.0.0.1`-এ local-only server চালায়; ইচ্ছাকৃতভাবে public sharing চালু করা নেই।
+- NVIDIA GPU: recommended for faster generation
+- Apple Silicon / MPS: supported if available
+- CPU mode: works but can be slow
+
+## Output folder
+
+Generated images are saved in:
+
+```text
+outputs/
+```
+
+## Project structure
+
+```text
+.
+├── app.py
+├── requirements.txt
+├── run_windows.bat
+├── README.md
+├── outputs/
+└── .gitignore
+```
+
+## Important notice
+
+This is a starter project for learning and local experimentation. It does not ship with an official Fooocus model or secure commercial license. Please respect model licensing, platform rules, and local legal requirements before publishing or sharing generated output.
+
+## License
+
+This repository is provided as a starter template for educational use. Add an appropriate license if you plan to distribute it publicly or commercially.

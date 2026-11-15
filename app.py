@@ -14,7 +14,7 @@ _pipe = None
 
 
 def load_pipeline():
-    """Load the model on first generation and reuse it for later requests."""
+    """Load the model once and reuse it for future generations."""
     global _pipe
     if _pipe is not None:
         return _pipe
@@ -41,13 +41,14 @@ def load_pipeline():
 def generate(prompt, negative_prompt, width, height, steps, guidance, seed):
     prompt = (prompt or "").strip()
     if not prompt:
-        raise gr.Error("একটি prompt লিখুন।")
+        raise gr.Error("Prompt লিখুন, তারপর ছবি তৈরি করুন.")
 
     seed = int(seed)
     if seed < 0:
         seed = secrets.randbelow(2**31)
+
     generator_device = "cuda" if torch.cuda.is_available() else "cpu"
-    if torch.backends.mps.is_available():
+    if getattr(torch.backends, "mps", None) and torch.backends.mps.is_available():
         generator_device = "mps"
     generator = torch.Generator(device=generator_device).manual_seed(seed)
 
@@ -61,37 +62,54 @@ def generate(prompt, negative_prompt, width, height, steps, guidance, seed):
         guidance_scale=float(guidance),
         generator=generator,
     )
+
     image = result.images[0]
     output_path = OUTPUT_DIR / f"image-{seed}.png"
-    # Avoid overwriting an earlier image created with the same seed.
     if output_path.exists():
         output_path = OUTPUT_DIR / f"image-{seed}-{secrets.token_hex(3)}.png"
+
     image.save(output_path)
     return image, str(output_path), seed
 
 
 with gr.Blocks(title="Bangla AI Image Studio", theme=gr.themes.Soft()) as demo:
-    gr.Markdown("# Bangla AI Image Studio\nPrompt লিখে AI ছবি তৈরি করুন। প্রথমবার Generate চাপলে model download হবে।")
+    gr.Markdown(
+        "# Bangla AI Image Studio\n"
+        "Prompt লিখে AI ছবি তৈরি করুন। প্রথমবার model download হলে একটু সময় লাগতে পারে."
+    )
+
     with gr.Row():
         with gr.Column(scale=1):
-            prompt = gr.Textbox(label="Prompt", lines=4, placeholder="Describe the image you want...")
-            negative_prompt = gr.Textbox(label="Negative prompt (optional)", lines=2)
+            prompt = gr.Textbox(
+                label="Prompt",
+                lines=4,
+                placeholder="Example: a cinematic portrait of a cyberpunk girl, neon lights, highly detailed, ultra sharp"
+            )
+            negative_prompt = gr.Textbox(
+                label="Negative prompt (optional)",
+                lines=2,
+                placeholder="blurry, low quality, distorted face, cropped"
+            )
+
             with gr.Row():
                 width = gr.Dropdown([512, 640, 768], value=512, label="Width")
                 height = gr.Dropdown([512, 640, 768], value=512, label="Height")
+
             steps = gr.Slider(10, 50, value=25, step=1, label="Steps")
             guidance = gr.Slider(1, 15, value=7.5, step=0.5, label="Guidance scale")
             seed = gr.Number(value=-1, precision=0, label="Seed (-1 = random)")
-            button = gr.Button("ছবি তৈরি করুন", variant="primary")
+            generate_button = gr.Button("ছবি তৈরি করুন", variant="primary")
+
         with gr.Column(scale=1):
-            image = gr.Image(label="Generated image", type="pil")
+            image_output = gr.Image(label="Generated image", type="pil")
             saved_file = gr.Textbox(label="Saved file")
             used_seed = gr.Number(label="Used seed", precision=0)
 
-    button.click(
+    generate_button.click(
         fn=generate,
         inputs=[prompt, negative_prompt, width, height, steps, guidance, seed],
-        outputs=[image, saved_file, used_seed],
+        outputs=[image_output, saved_file, used_seed],
     )
+
 
 demo.queue().launch(server_name="127.0.0.1", server_port=7860)

@@ -2,34 +2,19 @@
 
 Thanks for considering a contribution to Bangla AI Image Studio.
 
-## How to contribute
+## Development setup
 
-1. Fork the repository.
-2. Create a feature branch.
-3. Make your changes.
-4. Run a quick validation locally.
-5. Open a pull request with a clear description.
+Use Python 3.10+ and create an isolated virtual environment. Install runtime dependencies with `pip install -r requirements.txt`. The unit tests use Python's standard library and do not download the image model.
 
-## Code style
+## Before opening a pull request
 
-- Keep the code simple and readable.
-- Use clear function names.
-- Document important behavior in comments when needed.
-- Prefer small, focused changes.
+```bash
+python -m compileall -q app.py studio_utils.py tests
+python -m unittest discover -s tests -v
+```
 
-## Pull request guidelines
-
-- Explain what problem the change solves.
-- Include screenshots or examples when the UI changes.
-- Keep the scope narrow and easy to review.
+Please keep changes focused, explain the user impact, update docs when behavior changes, and include screenshots for UI changes. Never commit secrets, model weights, generated personal content, `.env`, or Hugging Face credentials.
 
 ## Reporting issues
 
-Please include:
-
-- steps to reproduce
-- expected behavior
-- actual behavior
-- relevant environment details (OS, Python version, GPU, model)
-
-Thank you for helping improve the project.
+Include reproduction steps, expected and actual behavior, OS, Python version, GPU, model ID, and relevant sanitized logs. Do not post access tokens or private prompts.

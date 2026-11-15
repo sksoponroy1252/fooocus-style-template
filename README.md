@@ -1,33 +1,44 @@
 # Bangla AI Image Studio
 
-AI image generation starter app inspired by Fooocus — designed for local prompt-to-image workflows with a simple Gradio interface.
+<div align="center">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-blue" alt="Python 3.10+" />
+  <img src="https://img.shields.io/badge/Gradio-5.x-orange" alt="Gradio 5.x" />
+  <img src="https://img.shields.io/badge/Diffusers-0.32.x-8A2BE2" alt="Diffusers 0.32.x" />
+  <img src="https://img.shields.io/badge/Status-Starter%20Template-success" alt="Starter Template" />
+</div>
 
-This project is a lightweight starter template and is not affiliated with the official Fooocus project or its model files.
+Bangla AI Image Studio is a local, prompt-to-image starter built with Python, Gradio, and Diffusers. It is inspired by the workflow of tools like Fooocus, but it is a lightweight independent template for local experimentation and learning.
 
-## Features
+This repository is designed for users who want a clean starting point to generate AI images from text prompts on their own machine.
 
-- Prompt and negative prompt input
-- Width / height controls
-- Inference steps and guidance scale controls
-- Seed-based reproducible generation
-- Saves generated output to the `outputs/` folder
+## Overview
+
+- Prompt-based image generation
+- Optional negative prompt
+- Width, height, steps, guidance scale, and seed controls
+- Local model loading with Hugging Face Diffusers
+- Generated files saved into the `outputs/` folder
 - Works with CUDA, MPS, or CPU fallback
-- Easy local startup in one command
+
+## Why this project exists
+
+Many users want a simple local AI image generation workflow without the complexity of a full production application. This project provides a clean starter template that is:
+
+- easy to run locally
+- easy to customize
+- suitable for experimentation and learning
+- lightweight compared to full-featured desktop tools
 
 ## Download
 
-You can download the project source from GitHub:
-
-- https://github.com/sksoponroy1252/fooocus-style-template
-
-To get the latest files locally:
+Clone the repository:
 
 ```bash
 git clone https://github.com/sksoponroy1252/fooocus-style-template.git
 cd fooocus-style-template
 ```
 
-## Quick start
+## Quick Start
 
 ### Windows
 
@@ -39,13 +50,13 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Or use the included launcher:
+You can also launch directly with:
 
 ```powershell
 run_windows.bat
 ```
 
-Then open:
+After startup, open:
 
 ```text
 http://127.0.0.1:7860
@@ -61,50 +72,52 @@ pip install -r requirements.txt
 python app.py
 ```
 
-## Model configuration
+## Model Setup
 
-The project uses Hugging Face Diffusers by default:
+This project uses a Hugging Face Diffusers model by default:
 
 ```text
 stable-diffusion-v1-5/stable-diffusion-v1-5
 ```
 
-To use a different model:
+### Use another model
 
-### PowerShell
+PowerShell:
 
 ```powershell
 $env:MODEL_ID="your-org/your-model-name"
 python app.py
 ```
 
-### Bash
+Bash:
 
 ```bash
 MODEL_ID="your-org/your-model-name" python app.py
 ```
 
-If the model is gated, sign in with Hugging Face first:
+If the model is gated, authenticate first:
 
 ```bash
 huggingface-cli login
 ```
 
-## Hardware notes
+## Features
 
-- NVIDIA GPU: recommended for faster generation
-- Apple Silicon / MPS: supported if available
-- CPU mode: works but can be slow
+### Image generation controls
 
-## Output folder
+- Prompt text
+- Negative prompt
+- Width and height
+- Steps and guidance scale
+- Random or fixed seed
 
-Generated images are saved in:
+### Local workflow
 
-```text
-outputs/
-```
+- Model loads only once and stays cached on disk
+- Generated output saved to `outputs/`
+- Easy to customize based on project needs
 
-## Project structure
+## Project Structure
 
 ```text
 .
@@ -112,14 +125,60 @@ outputs/
 ├── requirements.txt
 ├── run_windows.bat
 ├── README.md
+├── CONTRIBUTING.md
+├── LICENSE
 ├── outputs/
-└── .gitignore
+├── .gitignore
+└── .venv/
 ```
 
-## Important notice
+## Hardware Notes
 
-This is a starter project for learning and local experimentation. It does not ship with an official Fooocus model or secure commercial license. Please respect model licensing, platform rules, and local legal requirements before publishing or sharing generated output.
+- NVIDIA GPU: recommended for the best performance
+- Apple Silicon / MPS: supported when available
+- CPU fallback: works but may be slow for larger generations
+
+## Output Directory
+
+Generated images are saved under:
+
+```text
+outputs/
+```
+
+## Troubleshooting
+
+### Model download is slow
+
+- Check your internet connection
+- Confirm you have enough disk space
+- Use a smaller model if needed
+
+### CUDA not detected
+
+- Verify your GPU driver is installed
+- Install the correct PyTorch build for your hardware
+- Launch in CPU mode if needed
+
+### Application does not open
+
+- Ensure dependencies are installed with `pip install -r requirements.txt`
+- Re-create the virtual environment if the setup is inconsistent
+
+## Contribution
+
+Contributions are welcome. Please open an issue or submit a pull request if you want to improve the project.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
 ## License
 
-This repository is provided as a starter template for educational use. Add an appropriate license if you plan to distribute it publicly or commercially.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Important Notice
+
+This project is a starter template for local experimentation and learning. It does not contain official Fooocus commercial assets, proprietary model bundles, or any bundled paid software. Model licensing and generated image usage remain subject to the respective model license and applicable local laws.
+
+## Status
+
+Production-ready for local experimentation and customization, but not intended as a full replacement for professional image generation stack or commercial deployment tooling.
